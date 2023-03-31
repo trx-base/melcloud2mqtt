@@ -1,0 +1,19 @@
+micronaut:
+  server:
+    port: 19080
+  http:
+    services:
+      melcloud-api:
+        url: "https://app.melcloud.com"
+mqtt:
+  serverURI: tcp://public.trxbroker.org:1883
+  clientId: melcloud2mqtt_${random.shortuuid}
+  topic: melcloud2mqtt
+
+melcloud:
+  email: "validaccount@melcloud.com"
+  password: "ValidPassword"
+
+homeassistant:
+  discoveryTopic: homeassistant
+  statusTopic: homeassistant/status

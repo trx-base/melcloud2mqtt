@@ -1,0 +1,70 @@
+### Add MELCloud Sensors
+MQTT tcp://185.119.118.72
+{{@streaming
+  async function writeStream(){
+    await sleep(1000);
+    createSensor("melcloud2mqtt_6661878", "FlowTemperature", "temperature", "°C")
+   
+    await sleep(1000);
+  }
+
+  function createSensor(deviceId, sensorName, deviceClass, unitOfMeasurement) {
+    const device =  {
+      "identifiers": [deviceId],
+      "name": "MELCloud - Test"
+    }
+    const Sensor = {
+      "device": device,
+      "device_class": deviceClass,
+      "name": sensorName,
+      "state_topic": `homeassistant/sensor/${deviceId}/state`,
+      "state_class": "measurement",
+      "unit_of_measurement": unitOfMeasurement,
+      "unique_id": `${deviceId}_${sensorName}`,
+      "value_template": `{{ value_json.${sensorName}}}`
+    }
+    mqttClient.publish(`homeassistant/sensor/${deviceId}/${sensorName}/config`, JSON.stringify(Sensor), {"retain": true});
+  }
+  exports.waitPromise = writeStream();
+}}
+
+### Remove MELCloud Sensors
+MQTT tcp://185.119.118.72
+{{@streaming
+  async function writeStream(){
+    await sleep(1000);
+     mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/FlowTemperature/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/ReturnTemperature/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/OutdoorTemperature/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/SetHeatFlowTemperatureZone1/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/SetCoolFlowTemperatureZone1/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/HeatPumpFrequency/config', '', {"retain": true});
+
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/CurrentEnergyConsumed/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/CurrentEnergyProduced/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/DailyEnergyConsumed/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_6661878/DailyEnergyProduced/config', '', {"retain": true});
+
+    mqttClient.publish('homeassistant/sensor/melcloud2mqtt_55958112/FlowTemperature/config', '', {"retain": true});
+    await sleep(1000);
+  }
+  exports.waitPromise = writeStream();
+}}
+
+### Set MELCloud Sensor State
+MQTT tcp://185.119.118.72
+Topic: homeassistant/sensor/melcloud2mqtt_55958112/state
+{
+    "FlowTemperature": 47.08,
+    "ReturnTemperature": 37.19,
+    "OutdoorTemperature": 8.20,  
+    "SetHeatFlowTemperatureZone1": 43.00,
+    "SetCoolFlowTemperatureZone1": 20.00,
+    "HeatPumpFrequency": 33,
+    "CurrentEnergyConsumed": 1.00,
+    "CurrentEnergyProduced": 4.00,
+    "DailyEnergyConsumed": 12.00,
+    "DailyEnergyProduced": 48.00
+}
+ 

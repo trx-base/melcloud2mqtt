@@ -1,0 +1,20 @@
+micronaut:
+  server:
+    port: 19080
+  http:
+    services:
+      melcloud-api:
+        url: "http://localhost:19080"
+mqtt:
+  clientId: melcloud2mqtt_integration-test_${random.shortuuid}
+  topic: integration-test/meldcloud2mqtt_integration-test-${random.shortuuid}
+  username: integration-test
+  password: ZRZh22GsL9KTLySg
+
+melcloud:
+  email: "validaccount@melcloud.com"
+  password: "ValidPassword"
+
+homeassistant:
+  discoveryTopic: integration-test/homeassistant
+  statusTopic: integration-test/homeassistant/status

@@ -1,0 +1,16 @@
+
+
+###
+# @name Clear Retained Topic
+MQTT tcp://185.119.118.72
+{{@streaming
+  async function writeStream(){
+    await sleep(1000);
+    mqttClient.publish('homeassistant/sensor/+/FlowTemperature/config', '', {"retain": true});
+    await sleep(1000);
+  }
+  exports.waitPromise = writeStream();
+}}
+
+
+ 

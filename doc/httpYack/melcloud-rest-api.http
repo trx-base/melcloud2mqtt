@@ -1,0 +1,34 @@
+###
+POST https://app.melcloud.com/Mitsubishi.Wifi.Client/Login/ClientLogin
+Content-Type: application/json
+
+{
+  "email": "melcloud2mqtt@delilovic.at",
+  "password": "G.mdSword19!",
+  "language": "0",
+  "appVersion": "1.25.2.0",
+  "persist": true
+}
+
+###
+GET https://app.melcloud.com/Mitsubishi.Wifi.Client/Login/ClientSavedLogin/?key=581EE39996F642AF9E3F6118368B3A&
+    appVersion=1.25.2.0
+
+###
+GET https://app.melcloud.com/Mitsubishi.Wifi.Client/User/ListDevices
+X-MitsContextKey: 52D8FBB5735E4269BCBC9309C55E63
+
+###
+GET https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/Get?id=55958112&buildingId=493374
+X-MitsContextKey: 52D8FBB5735E4269BCBC9309C55E63
+
+###
+POST https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/SetAtw
+X-MitsContextKey: 52D8FBB5735E4269BCBC9309C55E63
+Content-Type: application/json
+
+{
+  "EffectiveFlags": 281474976710656,
+  "SetHeatFlowTemperatureZone1": "36",
+  "DeviceID": "55958112"
+}

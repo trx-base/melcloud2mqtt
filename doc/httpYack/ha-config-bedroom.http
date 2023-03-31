@@ -1,0 +1,73 @@
+
+### Add Bedroom Sensors
+MQTT tcp://185.119.118.72
+{{@streaming
+  async function writeStream(){
+    const deviceId = "bedroom_demo_sensor"
+
+    const bedroom =  {
+      "identifiers": [deviceId],
+      "name": "0 Bedroom Demo Sensor"
+    }
+    const temperature = {
+      "device": bedroom,
+      "device_class": "temperature",
+      "name": deviceId + "_temerature",
+      "state_topic": "homeassistant/sensor/" + deviceId + "/state",
+      "unit_of_measurement": "°C",
+      "unique_id": deviceId + "_temerature",
+      "value_template": "{{ value_json.temperature}}" 
+    }
+    const humidity = {
+      "device": bedroom,
+      "device_class": "humidity",
+      "name": deviceId + "_humidity",
+      "state_topic": "homeassistant/sensor/" + deviceId + "/state",
+      "unit_of_measurement": "%",
+      "unique_id": deviceId + "_humidity",
+      "value_template": "{{ value_json.humidity}}" 
+    }
+    const smell = {
+        "device": bedroom,
+        "device_class": "aqi",
+        "name": deviceId + "_smell",
+        "state_topic": "homeassistant/sensor/" + deviceId + "/state",
+        "unit_of_measurement": "IJU",
+        "unique_id": deviceId + "_smell",
+        "value_template": "{{ value_json.smell}}"
+    }
+    await sleep(1000);
+    mqttClient.publish('homeassistant/sensor/' + deviceId + '/temperature/config', JSON.stringify(temperature), {"retain": true});
+    mqttClient.publish('homeassistant/sensor/' + deviceId + '/humidity/config', JSON.stringify(humidity), {"retain": true});
+    mqttClient.publish('homeassistant/sensor/' + deviceId + '/smell/config', JSON.stringify(smell), {"retain": true});
+    await sleep(1000);
+  }
+  exports.waitPromise = writeStream();
+}}
+
+###
+MQTT tcp://185.119.118.72
+{{@streaming
+  async function writeStream(){
+    await sleep(1000);
+    mqttClient.publish('homeassistant/sensor/sensorBedroomT/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/sensorBedroomH/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/sensorBedroomS/config', '', {"retain": true});
+    mqttClient.publish('homeassistant/sensor/sensorBedroomS/config', '', {"retain": true});
+    await sleep(1000);
+  }
+  exports.waitPromise = writeStream();
+}}
+
+###
+MQTT tcp://185.119.118.72
+Topic: homeassistant/sensor/bedroom_demo_sensor/state
+{
+    "temperature": 17.22,
+    "humidity": 26.68,
+    "smell": 2278
+}
+ 
+
+
+MQTT 0

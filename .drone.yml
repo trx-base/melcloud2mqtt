@@ -1,0 +1,26 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: gradle:7.6.1-jdk11-alpine
+    commands:
+      - gradle build
+      - gradle koverReport
+
+  - name: publish
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: trxbase/melcloud2mqtt
+      tags:
+        - latest
+
+
+
+
+
