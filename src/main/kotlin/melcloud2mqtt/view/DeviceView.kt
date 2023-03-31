@@ -6,6 +6,7 @@ import io.micronaut.serde.annotation.Serdeable
 @Serdeable
 data class DeviceView(
     @JsonProperty("Id") val id: String,
+    @JsonProperty("Name") val name: String,
     @JsonProperty("Type") val type: String?,
     @JsonProperty("FlowTemperature") val flowTemperature: String?,
     @JsonProperty("ReturnTemperature") val returnTemperature: String?,

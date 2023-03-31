@@ -33,6 +33,7 @@ class HomeAssistantServiceIntegrationTest : AbstractIntegrationTest() {
 
         val expectedDeviceView = DeviceView(
             deviceId,
+            "General Device Name",
             "1",
             "45.5",
             "37.0",

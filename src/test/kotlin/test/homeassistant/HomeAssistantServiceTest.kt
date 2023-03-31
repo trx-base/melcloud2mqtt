@@ -49,7 +49,7 @@ class HomeAssistantServiceTest {
 
     @BeforeEach
     fun setUp() {
-        val deviceView = DeviceView("1878694284", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+        val deviceView = DeviceView("1878694284", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
         every { homeAssistantConfig.discoveryTopic } returns "homeassistnat-test"
 
@@ -83,7 +83,7 @@ class HomeAssistantServiceTest {
 
         homeAssistantService.config()
         assertThat(haConfigSlot.captured.device.identifiers).containsExactly("melcloud2mqtt_1878694284")
-        assertThat(haConfigSlot.captured.device.name).isEqualTo("MELCloud - Name")
+        assertThat(haConfigSlot.captured.device.name).isEqualTo("MELCloud ")
         assertThat(haConfigSlot.captured.name).isEqualTo("FlowTemperature")
         assertThat(haConfigSlot.captured.deviceClass).isEqualTo("temperature")
         assertThat(haConfigSlot.captured.stateClass).isEqualTo("measurement")
@@ -97,7 +97,7 @@ class HomeAssistantServiceTest {
     @Test
     fun shouldPublish_whenGivenListDeviceViewFromMelcloudService_whenConfig() {
         val expectedId = UUID.randomUUID().toString()
-        val deviceView = DeviceView(expectedId, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+        val deviceView = DeviceView(expectedId, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
 
         val haConfigSlot = slot<HaConfig>()
@@ -110,12 +110,12 @@ class HomeAssistantServiceTest {
     @Test
     fun shouldPublishFlowTemperatureSensor_whenGivenFlowTemperature() {
         val deviceId = UUID.randomUUID().toString()
-        val deviceView = DeviceView(deviceId, "", "42", "", "", "", "", "", "", "", "", "", "", "", "", "")
+        val deviceView = DeviceView(deviceId, "Name", "42", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
 
         homeAssistantService.config()
         val expectedHaConfig = HaConfig(
-            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud - Name"),
+            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud Name"),
             "FlowTemperature",
             "temperature",
             "measurement",
@@ -146,7 +146,7 @@ class HomeAssistantServiceTest {
     @Test
     fun shouldPublishDeleteFlowTemperature_whenDeleteConfig_andGivenFlowTemperature() {
         val deviceId = UUID.randomUUID().toString()
-        val deviceView = DeviceView(deviceId, "", "42", "", "", "", "", "", "", "", "", "", "", "", "", "")
+        val deviceView = DeviceView(deviceId, "", "42", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
 
         homeAssistantService.deleteConfig()
@@ -163,12 +163,31 @@ class HomeAssistantServiceTest {
     @Test
     fun shouldPublishReturnTemperatureSensor_whenGivenReturnTemperature() {
         val deviceId = UUID.randomUUID().toString()
-        val deviceView = DeviceView(deviceId, "", "", "42", "", "", "", "", "", "", "", "", "", "", "", "")
+        val deviceView = DeviceView(
+            deviceId,
+            "Name",
+            "",
+            "",
+            "42",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+        )
+
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
 
         homeAssistantService.config()
         val expectedHaConfig = HaConfig(
-            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud - Name"),
+            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud Name"),
             "ReturnTemperature",
             "temperature",
             "measurement",
@@ -207,7 +226,7 @@ class HomeAssistantServiceTest {
     fun shouldPublishState_whenUpdateState() {
         val deviceId = UUID.randomUUID().toString()
         val deviceView =
-            DeviceView(deviceId, "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14")
+            DeviceView(deviceId, "", "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14")
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
 
         homeAssistantService.updateState()
@@ -255,22 +274,23 @@ class HomeAssistantServiceTest {
             "val",
             "val",
             "val",
+            "val",
         )
         log.info(ObjectMapper.getDefault().writeValueAsString(deviceView))
         assertThat(
             ObjectMapper.getDefault().writeValueAsString(deviceView),
-        ).isEqualTo("""{"Id":"val","Type":"val","FlowTemperature":"val","ReturnTemperature":"val","CurrentEnergyConsumed":"val","CurrentEnergyProduced":"val","DailyHeatingEnergyConsumed":"val","DailyHeatingEnergyProduced":"val","DailyCoolingEnergyConsumed":"val","DailyCoolingEnergyProduced":"val","DailyHotWaterEnergyConsumed":"val","DailyHotWaterEnergyProduced":"val","SetHeatFlowTemperatureZone1":"val","SetCoolFlowTemperatureZone1":"val","HeatPumpFrequency":"val","OutdoorTemperature":"val"}""")
+        ).isEqualTo("""{"Id":"val","Name":"val","Type":"val","FlowTemperature":"val","ReturnTemperature":"val","CurrentEnergyConsumed":"val","CurrentEnergyProduced":"val","DailyHeatingEnergyConsumed":"val","DailyHeatingEnergyProduced":"val","DailyCoolingEnergyConsumed":"val","DailyCoolingEnergyProduced":"val","DailyHotWaterEnergyConsumed":"val","DailyHotWaterEnergyProduced":"val","SetHeatFlowTemperatureZone1":"val","SetCoolFlowTemperatureZone1":"val","HeatPumpFrequency":"val","OutdoorTemperature":"val"}""")
     }
 
     @Test
     fun shouldPublishSetHeatFlowTemperatureZone1Sensor_whenGivenReturnTemperature() {
         val deviceId = UUID.randomUUID().toString()
-        val deviceView = DeviceView(deviceId, "", "", "", "", "", "", "", "", "", "", "", "42", "", "", "")
+        val deviceView = DeviceView(deviceId, "Name", "", "", "", "", "", "", "", "", "", "", "", "42", "", "", "")
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
 
         homeAssistantService.config()
         val expectedHaConfig = HaConfig(
-            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud - Name"),
+            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud Name"),
             "SetHeatFlowTemperatureZone1",
             "temperature",
             "measurement",
@@ -293,12 +313,12 @@ class HomeAssistantServiceTest {
     @Test
     fun shouldPublishOutdoorTemperatureSensor_whenGivenReturnTemperature() {
         val deviceId = UUID.randomUUID().toString()
-        val deviceView = DeviceView(deviceId, "", "", "", "", "", "", "", "", "", "", "", "42", "", "", "")
+        val deviceView = DeviceView(deviceId, "Name", "", "", "", "", "", "", "", "", "", "", "", "42", "", "", "")
         every { melcloudService.listDevices() } returns ListDevicesView(listOf(deviceView))
 
         homeAssistantService.config()
         val expectedHaConfig = HaConfig(
-            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud - Name"),
+            HaDevice(listOf("melcloud2mqtt_$deviceId"), "MELCloud Name"),
             "OutdoorTemperature",
             "temperature",
             "measurement",
@@ -321,7 +341,7 @@ class HomeAssistantServiceTest {
     @Test
     fun shouldAddPrefixToClientId_whenConfig() {
         val deviceId = UUID.randomUUID().toString()
-        val deviceView = DeviceView(deviceId, "", "", "", "", "", "", "", "", "", "", "", "42", "", "", "")
+        val deviceView = DeviceView(deviceId, "", "", "", "", "", "", "", "", "", "", "", "", "42", "", "", "")
 
         val slot = slot<HaConfig>()
         every { homeAssistantService.publisher.publish(any(), any(), any(), capture(slot)) } returns Unit

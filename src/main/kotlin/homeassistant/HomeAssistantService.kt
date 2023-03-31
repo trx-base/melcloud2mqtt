@@ -24,21 +24,22 @@ open class HomeAssistantService {
     fun config() {
         val deviceView = melcloudService.listDevices().devices.first()
         val deviceId = "melcloud2mqtt_" + deviceView.id
+        val deviceName = "MELCloud " + deviceView.name
 
-        publishTemperatureSensor(deviceId, "FlowTemperature")
-        publishTemperatureSensor(deviceId, "ReturnTemperature")
-        publishTemperatureSensor(deviceId, "SetHeatFlowTemperatureZone1")
-        publishTemperatureSensor(deviceId, "OutdoorTemperature")
+        publishTemperatureSensor(deviceId, deviceName, "FlowTemperature")
+        publishTemperatureSensor(deviceId, deviceName, "ReturnTemperature")
+        publishTemperatureSensor(deviceId, deviceName, "SetHeatFlowTemperatureZone1")
+        publishTemperatureSensor(deviceId, deviceName, "OutdoorTemperature")
     }
 
-    private fun publishTemperatureSensor(deviceId: String, sensorName: String) {
+    private fun publishTemperatureSensor(deviceId: String, deviceName: String, sensorName: String) {
         val topic = homeAssistantConfig.discoveryTopic
         publisher.publish(
             true,
             "$topic/sensor/$deviceId/$sensorName/config",
             null,
             HaConfig(
-                device = HaDevice(arrayListOf(deviceId), "MELCloud - Name"),
+                device = HaDevice(arrayListOf(deviceId), deviceName),
                 sensorName,
                 "temperature",
                 "measurement",

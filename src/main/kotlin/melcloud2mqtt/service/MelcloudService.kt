@@ -38,6 +38,7 @@ class MelcloudService {
     private fun mapDeviceGeneralToDeviceView(deviceGeneral: DeviceGeneral): DeviceView {
         return DeviceView(
             deviceGeneral.DeviceID,
+            deviceGeneral.DeviceName,
             deviceGeneral.Device.DeviceType,
             deviceGeneral.Device.FlowTemperature,
             deviceGeneral.Device.ReturnTemperature,

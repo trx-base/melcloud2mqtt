@@ -62,6 +62,7 @@ class MelcloudServiceTest {
     @Test
     fun shouldMapToListDevicesView_whenGivenBuildingArrayByMelcloudHttpClient_whenListDevices() {
         val deviceId = UUID.randomUUID().toString()
+        val deviceName = UUID.randomUUID().toString()
         val deviceType = UUID.randomUUID().toString()
         val flowTemperature = UUID.randomUUID().toString()
         val returnTemperature = UUID.randomUUID().toString()
@@ -84,6 +85,7 @@ class MelcloudServiceTest {
                     arrayOf(
                         DeviceGeneral(
                             deviceId,
+                            deviceName,
                             DeviceSpecific(
                                 deviceType,
                                 flowTemperature,
@@ -108,6 +110,7 @@ class MelcloudServiceTest {
         )
         val listDevicesView = mqttService.listDevices()
         assertThat(listDevicesView.devices.first().id).isEqualTo(deviceId)
+        assertThat(listDevicesView.devices.first().name).isEqualTo(deviceName)
         assertThat(listDevicesView.devices.first().type).isEqualTo(deviceType)
         assertThat(listDevicesView.devices.first().flowTemperature).isEqualTo(flowTemperature)
         assertThat(listDevicesView.devices.first().returnTemperature).isEqualTo(returnTemperature)
