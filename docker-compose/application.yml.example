@@ -6,7 +6,7 @@ micronaut:
       melcloud-api:
         url: "https://app.melcloud.com"
 mqtt:
-  serverURI: tcp://public.trxbroker.org:1883
+  serverURI: tcp://mqttbroker.example.com:1883
   clientId: melcloud2mqtt_${random.shortuuid}
   topic: melcloud2mqtt
 
